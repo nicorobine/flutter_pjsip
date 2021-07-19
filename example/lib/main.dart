@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_pjsip/flutter_pjsip.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,6 +20,31 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     initSipPlugin();
+    _permissionHandler();
+  }
+
+  /// 权限管理
+  _permissionHandler() async {
+    Map<Permission, PermissionStatus> statuses = await [Permission.speech].request();
+
+    List<Permission> deniedPermissions = [];
+    List<Permission> permanentlyDeniedPermissions = [];
+
+    for (Permission permission in statuses.keys) {
+      var status = statuses[permission];
+      switch (status) {
+        case PermissionStatus.denied: // 拒绝
+          deniedPermissions.add(permission);
+          break;
+        case PermissionStatus.permanentlyDenied: // Android不再提醒
+          permanentlyDeniedPermissions.add(permission);
+          break;
+        case PermissionStatus.undetermined: // 未申请
+        case PermissionStatus.restricted:
+        case PermissionStatus.granted:
+          break;
+      }
+    }
   }
 
   void initSipPlugin() {
@@ -119,12 +145,12 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _sipLogin() async {
     bool loginSuccess =
-        await _pjsip.pjsipLogin(username: '1012', password: '123@jvtd', ip: '117.78.34.48', port: '6050');
+        await _pjsip.pjsipLogin(username: '1025', password: '1', ip: '198.13.35.166', port: '9017');
     showToast('登录', loginSuccess);
   }
 
   Future<void> _sipCall() async {
-    bool callSuccess = await _pjsip.pjsipCall(username: '1010', ip: '117.78.34.48', port: '6050');
+    bool callSuccess = await _pjsip.pjsipCall(username: '1026', ip: '198.13.35.166', port: '9017');
     showToast('打电话', callSuccess);
   }
 

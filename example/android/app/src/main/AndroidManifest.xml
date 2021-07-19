@@ -2,6 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.jvtd.flutter_pjsip_example">
 
+    <!-- 录音权限-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:icon="@mipmap/ic_launcher"
