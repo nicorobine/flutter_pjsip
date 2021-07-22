@@ -38,6 +38,9 @@ import org.pjsip.pjsua2.pjsip_status_code;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -47,7 +50,7 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 /**
  * FlutterPjsipPlugin
  */
-public class FlutterPjsipPlugin implements MethodCallHandler
+public class FlutterPjsipPlugin implements MethodCallHandler, FlutterPlugin, ActivityAware
 {
   private static final String TAG = "FlutterPjsipPlugin";
 
@@ -295,8 +298,10 @@ public class FlutterPjsipPlugin implements MethodCallHandler
     }
   });
 
+  public FlutterPjsipPlugin() {
+  }
 
-  private FlutterPjsipPlugin(final MethodChannel channel, Activity activity)
+  private void setFlutterPjsipPlugin(final MethodChannel channel, Activity activity)
   {
     this.mChannel = channel;
     this.mChannel.setMethodCallHandler(this);
@@ -308,12 +313,12 @@ public class FlutterPjsipPlugin implements MethodCallHandler
   /**
    * Plugin registration.
    */
-  public static void registerWith(Registrar registrar)
-  {
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), CHANNEL);
-    //setMethodCallHandler在此通道上接收方法调用的回调
-    channel.setMethodCallHandler(new FlutterPjsipPlugin(channel, registrar.activity()));
-  }
+//  public static void registerWith(Registrar registrar)
+//  {
+//    final MethodChannel channel = new MethodChannel(registrar.messenger(), CHANNEL);
+//    setMethodCallHandler在此通道上接收方法调用的回调
+//    channel.setMethodCallHandler(new FlutterPjsipPlugin(channel, registrar.activity()));
+//  }
 
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result)
@@ -591,6 +596,37 @@ public class FlutterPjsipPlugin implements MethodCallHandler
       mResult.success(true);
     } else
       mResult.success(false);
+  }
+  private FlutterPluginBinding flutterPluginBinding;
+  @Override
+  public void onAttachedToEngine(@NonNull FlutterPlugin.FlutterPluginBinding flutterPluginBinding) {
+    this.flutterPluginBinding = flutterPluginBinding;
+  }
+
+  @Override
+  public void onDetachedFromEngine(@NonNull FlutterPlugin.FlutterPluginBinding flutterPluginBinding) {
+
+  }
+
+  @Override
+  public void onAttachedToActivity(@NonNull ActivityPluginBinding activityPluginBinding) {
+    final MethodChannel channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), CHANNEL);
+    setFlutterPjsipPlugin(channel, activityPluginBinding.getActivity());
+  }
+
+  @Override
+  public void onDetachedFromActivityForConfigChanges() {
+
+  }
+
+  @Override
+  public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding activityPluginBinding) {
+
+  }
+
+  @Override
+  public void onDetachedFromActivity() {
+
   }
 
   private class MyBroadcastReceiver extends BroadcastReceiver
