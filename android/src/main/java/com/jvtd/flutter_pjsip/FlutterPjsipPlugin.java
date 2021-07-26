@@ -184,23 +184,23 @@ public class FlutterPjsipPlugin implements MethodCallHandler, FlutterPlugin, Act
           pjsip_inv_state state = callInfo.getState();
           if (state == pjsip_inv_state.PJSIP_INV_STATE_CALLING)
           {
-            mSoundPoolUtil = new SoundPoolUtil(mActivity, new SoundPool.OnLoadCompleteListener()
-            {
-              @Override
-              public void onLoadComplete(SoundPool soundPool, int sampleId, int status)
-              {
-                if (mSoundPoolUtil != null)
-                  mSoundPoolUtil.play(mSoundWaitId);
-              }
-            });
-            int rawId = R.raw.ring_back;
-            mSoundWaitId = mSoundPoolUtil.load(rawId);
+//            mSoundPoolUtil = new SoundPoolUtil(mActivity, new SoundPool.OnLoadCompleteListener()
+//            {
+//              @Override
+//              public void onLoadComplete(SoundPool soundPool, int sampleId, int status)
+//              {
+//                if (mSoundPoolUtil != null)
+//                  mSoundPoolUtil.play(mSoundWaitId);
+//              }
+//            });
+//            int rawId = R.raw.ring_back;
+//            mSoundWaitId = mSoundPoolUtil.load(rawId);
 
             mPjSipManagerState = PjSipManagerState.STATE_CALLING;
           } else if (state == pjsip_inv_state.PJSIP_INV_STATE_CONFIRMED)
           {
             registerPhoneState();
-            stopRingBackSound();
+//            stopRingBackSound();
             mPjSipManagerState = PjSipManagerState.STATE_CONFIRMED;
             // 通话状态被确认，震动500ms
             if (mVibrator != null)
@@ -222,7 +222,7 @@ public class FlutterPjsipPlugin implements MethodCallHandler, FlutterPlugin, Act
             mCurrentCall.delete();
             mCurrentCall = null;
 
-            stopRingBackSound();
+//            stopRingBackSound();
             unRegisterPhoneState();
           }
 
@@ -259,17 +259,17 @@ public class FlutterPjsipPlugin implements MethodCallHandler, FlutterPlugin, Act
           {
             try
             {
-              mSoundPoolUtil = new SoundPoolUtil(mActivity, new SoundPool.OnLoadCompleteListener()
-              {
-                @Override
-                public void onLoadComplete(SoundPool soundPool, int sampleId, int status)
-                {
-                  if (mSoundPoolUtil != null)
-                    mSoundPoolUtil.play(mSoundWaitId);
-                }
-              });
-              int rawId = R.raw.incoming_ring;
-              mSoundWaitId = mSoundPoolUtil.load(rawId);
+//              mSoundPoolUtil = new SoundPoolUtil(mActivity, new SoundPool.OnLoadCompleteListener()
+//              {
+//                @Override
+//                public void onLoadComplete(SoundPool soundPool, int sampleId, int status)
+//                {
+//                  if (mSoundPoolUtil != null)
+//                    mSoundPoolUtil.play(mSoundWaitId);
+//                }
+//              });
+//              int rawId = R.raw.incoming_ring;
+//              mSoundWaitId = mSoundPoolUtil.load(rawId);
 
               /* Answer with ringing */
               prm.setStatusCode(pjsip_status_code.PJSIP_SC_RINGING);
@@ -553,7 +553,7 @@ public class FlutterPjsipPlugin implements MethodCallHandler, FlutterPlugin, Act
       } finally
       {
         mCurrentCall = null;
-        stopRingBackSound();
+//        stopRingBackSound();
         if (mChannel != null)
         {
           mChannel.invokeMethod(METHOD_CALL_STATUS_CHANGED, buildArguments("DISCONNCTD", null));
