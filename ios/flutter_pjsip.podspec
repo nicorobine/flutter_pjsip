@@ -16,8 +16,21 @@ A new Flutter plugin.
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
   s.resources = ['Classes/PJSIPClass/Assets/*.png','Classes/PJSIPClass/Assets/*.wav']
-  s.dependency 'pjsip','~> 2.8.0'
+  s.dependency 'pjsip','~> 2.9.1'
   s.dependency 'Masonry', '~> 0.6.3'
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
+
+  header_search_paths     = [
+                                '"$(PODS_ROOT)/Headers/Public/pjsip/pjlib/include"',
+                                '"$(PODS_ROOT)/Headers/Public/pjsip/pjlib-util/include"',
+                                '"$(PODS_ROOT)/Headers/Public/pjsip/pjmedia/include"',
+                                '"$(PODS_ROOT)/Headers/Public/pjsip/pjnath/include"',
+                                '"$(PODS_ROOT)/Headers/Public/pjsip/pjsip/include"'
+                              ]
+
+  s.xcconfig                = {
+                                'HEADER_SEARCH_PATHS'          => header_search_paths.join(' '),
+                                'GCC_PREPROCESSOR_DEFINITIONS' => 'PJ_AUTOCONF=1'
+                              }
 end
 
