@@ -25,7 +25,7 @@ class _MyAppState extends State<MyApp> {
 
   /// 权限管理
   _permissionHandler() async {
-    Map<Permission, PermissionStatus> statuses = await [Permission.speech].request();
+    Map<Permission, PermissionStatus> statuses = await [Permission.microphone].request();
 
     List<Permission> deniedPermissions = [];
     List<Permission> permanentlyDeniedPermissions = [];
@@ -145,12 +145,12 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _sipLogin() async {
     bool loginSuccess =
-        await _pjsip.pjsipLogin(username: '1025', password: '1', ip: '198.13.35.166', port: '9017');
+    await _pjsip.pjsipLogin(username: '1025', password: '1', ip: '39.107.68.193', port: '9017');
     showToast('登录', loginSuccess);
   }
 
   Future<void> _sipCall() async {
-    bool callSuccess = await _pjsip.pjsipCall(username: '1026', ip: '198.13.35.166', port: '9017');
+    bool callSuccess = await _pjsip.pjsipCall(username: '1026', ip: '39.107.68.193', port: '9017');
     showToast('打电话', callSuccess);
   }
 
